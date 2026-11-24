@@ -1,0 +1,7 @@
+# GitHub requests a review from these people on every pull request that touches matching paths.
+# Mike signs off on database content; everything else can be reviewed by any org member.
+# TODO: confirm @mtisza1 is Mike's handle, and add a second reviewer for scripts/ and .github/.
+
+/sources/    @mtisza1
+/curation/   @mtisza1
+/build/      @mtisza1

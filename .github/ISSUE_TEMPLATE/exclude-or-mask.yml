@@ -1,0 +1,67 @@
+name: Exclude or mask
+description: Contamination, vector or host sequence, misannotated or low-quality records.
+title: "Exclude or mask: "
+labels: ["curation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Fill in what you can. You do not need to open a pull request: a maintainer will reply here, and they or someone working with them will make the change.
+  - type: textarea
+    id: regions
+    attributes:
+      label: Accession and region
+      description: One per line. Give the accession with its version suffix, then the first and last base of the region, counted from 1 as BLAST and GenBank show them. Write "whole record" if all of it is the problem.
+      placeholder: |
+        NC_001401.2  1-145
+        MN123456.1   whole record
+      render: text
+    validations:
+      required: true
+  - type: input
+    id: what-it-is
+    attributes:
+      label: What the sequence is
+      description: For example, pUC19 cloning vector, mouse genome, or a poly-A repeat.
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind of sequence
+      options:
+        - "vector: cloning vector, adapter or other synthetic sequence"
+        - "host: host genome or endogenous sequence"
+        - "low_complexity: repeats or low-entropy sequence"
+        - "Not sure"
+    validations:
+      required: true
+  - type: dropdown
+    id: action
+    attributes:
+      label: Proposed action
+      description: Mask when the rest of the record is a good genome. Exclude when the whole record is unreliable.
+      options:
+        - "Mask the region and keep the rest of the record"
+        - "Exclude the whole record"
+        - "Not sure"
+    validations:
+      required: true
+  - type: textarea
+    id: how-found
+    attributes:
+      label: How you found it
+      description: For example, reads piling up on one region in negative controls, or a BLAST screen against UniVec.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: "If you have it, what the region matches: tool, database, hit, identity and coordinates. A pasted BLAST line is ideal."
+      render: text
+  - type: textarea
+    id: effect
+    attributes:
+      label: Effect on results
+      description: Optional. Samples or detections this caused, such as false positives in blanks. Please do not attach reads or anything that identifies a patient.

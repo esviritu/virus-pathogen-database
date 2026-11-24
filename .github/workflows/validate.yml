@@ -1,0 +1,39 @@
+# Runs on every pull request so the maintainer only sees PRs whose tables are already well formed.
+# Standard library Python only: no environment to install, about ten seconds a run.
+name: validate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # the changelog check diffs against the base branch
+
+      - name: Test the validator itself
+        run: python3 -m unittest discover -s tests -v
+
+      - name: Check sources and curation tables
+        run: python3 scripts/validate.py
+
+      # A data change without a changelog line is the most likely thing to slip through review.
+      # Add the skip-changelog label to a PR that genuinely needs no entry (e.g. a typo fix).
+      - name: Data changes come with a changelog entry
+        if: github.event_name == 'pull_request' && !contains(github.event.pull_request.labels.*.name, 'skip-changelog')
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          changed_files=$(git diff --name-only "origin/${BASE_REF}...HEAD")
+          if echo "$changed_files" | grep -qE '^(sources|curation)/' && ! echo "$changed_files" | grep -qx 'CHANGELOG.md'; then
+            echo "::error::This PR changes sources/ or curation/ but not CHANGELOG.md. Add a line under [Unreleased]."
+            exit 1
+          fi
+          echo "changelog check passed"
