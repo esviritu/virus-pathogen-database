@@ -1,0 +1,56 @@
+name: Add sequences
+description: A virus or genome VPD is missing.
+title: "Add: "
+labels: ["add-sequences"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Fill in what you can. You do not need to open a pull request: a maintainer will reply here, and they or someone working with them will make the change.
+  - type: textarea
+    id: accessions
+    attributes:
+      label: Accessions to add
+      description: One NCBI accession per line, with its version suffix (`NC_001401.2`, not `NC_001401`). For a segmented virus, list every segment.
+      placeholder: |
+        NC_002023.1
+        NC_002021.1
+      render: text
+    validations:
+      required: true
+  - type: input
+    id: virus-name
+    attributes:
+      label: Virus name
+    validations:
+      required: true
+  - type: dropdown
+    id: why
+    attributes:
+      label: Why VPD needs it
+      options:
+        - "VPD has no genome for this species"
+        - "The strain is too different from the genome VPD has, so reads miss it"
+        - "Something else"
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Tell us more
+      description: For a divergent strain, say how different it is if you know, for example the ANI to the closest VPD genome.
+    validations:
+      required: true
+  - type: checkboxes
+    id: genome-quality
+    attributes:
+      label: Genome quality
+      description: Tick what you have checked. Leave a box empty if you are not sure.
+      options:
+        - label: Complete or near-complete genome (not a partial gene)
+        - label: Not already in VPD under another accession
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Optional. Samples where this genome would have changed a result. Please do not attach reads or anything that identifies a patient.

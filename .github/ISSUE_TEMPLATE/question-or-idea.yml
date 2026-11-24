@@ -1,0 +1,33 @@
+name: Question or idea
+description: Anything else, including "is this a database problem?" and proposals to change how VPD works.
+title: "Question: "
+labels: ["question"]
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Your question or idea
+      description: Plain language is fine. You do not need to know which file would change, or how to fix it.
+    validations:
+      required: true
+  - type: textarea
+    id: prompted-by
+    attributes:
+      label: What prompted it
+      description: Optional. A result that surprised you, a virus you expected to see, or something in the docs.
+  - type: input
+    id: vpd-version
+    attributes:
+      label: VPD version
+      description: If it is about a result. The number in the database file name, for example v3.2.4.
+  - type: input
+    id: esviritu-version
+    attributes:
+      label: EsViritu version
+      description: If it is about a result.
+  - type: textarea
+    id: output-rows
+    attributes:
+      label: Rows from your EsViritu output
+      description: If it is about a result, the row or rows from `detected_virus.info.tsv`. Please do not paste reads or anything that identifies a patient.
+      render: text
